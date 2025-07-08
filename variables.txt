@@ -1,0 +1,6 @@
+Name            Value           Type       Line      
+-----------------------------------------------
+x               8               int        1         
+y               3.140000        float      2         
+flag            true            bool       3         
+name            42              int        4         

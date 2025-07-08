@@ -1,0 +1,11 @@
+var x : int = 8;
+var y : float = 3.14;
+var flag : bool = true;
+var name : int = 42;
+if (x > 5) {
+    y = y + 1.0;
+}
+else {
+    y = y - 1.0;
+}
+return x;
