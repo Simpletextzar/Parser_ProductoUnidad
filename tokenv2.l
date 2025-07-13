@@ -88,12 +88,15 @@ void write_tokens_and_variables() {
 "int"               { add_token("INT", yytext, line_number); return INT_TOKEN; }
 "float"             { add_token("FLOAT", yytext, line_number); return FLOAT_TOKEN; }
 "bool"              { add_token("BOOL", yytext, line_number); return BOOL_TOKEN; }
-(true|false) { add_token("BOOL_LITERAL", yytext, line_number);
-               strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
-               yylval.str[sizeof(yylval.str)-1] = '\0';
-               return BOOL_LITERAL_TOKEN; }
+"string" { add_token("STRING", yytext, line_number); return STRING_TOKEN; }
 "void"              { add_token("VOID", yytext, line_number); }
 "var"               { add_token("VAR", yytext, line_number); sscanf(yytext, "%s", yylval.str); return VAR_TOKEN; }
+"func"              { add_token("FUNC", yytext, line_number); return FUNC_TOKEN; }
+"main"              { add_token("MAIN", yytext, line_number); return MAIN_TOKEN; }
+"program"           { add_token("PROGRAM", yytext, line_number); return PROGRAM_TOKEN; }
+"print"             { add_token("PRINT", yytext, line_number); return PRINT_TOKEN; }
+"to"                { add_token("TO", yytext, line_number); return TO_TOKEN; }
+
 
 "=="                { add_token("EQ", yytext, line_number); return EQ_TOKEN; }
 "!="                { add_token("NEQ", yytext, line_number); return NEQ_TOKEN; }
@@ -106,6 +109,7 @@ void write_tokens_and_variables() {
 "-"                 { add_token("MINUS", yytext, line_number); return MINUS_TOKEN; }
 "*"                 { add_token("MUL", yytext, line_number); return MUL_TOKEN; }
 "/"                 { add_token("DIV", yytext, line_number); return DIV_TOKEN; }
+"%"                 { add_token("MOD", yytext, line_number); return MOD_TOKEN; }
 "("                 { add_token("LPAREN", yytext, line_number); return LPAREN_TOKEN; }
 ")"                 { add_token("RPAREN", yytext, line_number); return RPAREN_TOKEN; }
 "{"                 { add_token("LBRACE", yytext, line_number); return LBRACE_TOKEN; }
@@ -114,15 +118,26 @@ void write_tokens_and_variables() {
 ";"                 { add_token("SEMICOLON", yytext, line_number); return SEMICOLON_TOKEN; }
 ","                 { add_token("COMMA", yytext, line_number); return COMMA_TOKEN; }
 
+"&&"                { add_token("AND", yytext, line_number); return AND_TOKEN; }
+"\\|\\|"            { add_token("OR", yytext, line_number); return OR_TOKEN; }
+"!"                 { add_token("NOT", yytext, line_number); return NOT_TOKEN; }
+
+(true|false)        { add_token("BOOL_LITERAL", yytext, line_number);
+                        strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
+                        yylval.str[sizeof(yylval.str)-1] = '\0';
+                        return BOOL_LITERAL_TOKEN; }
 [0-9]+              { add_token("NUMBER", yytext, line_number); 
                         yylval.number = atoi(yytext); return NUMBER_TOKEN; }
 [0-9]+\.[0-9]+      { add_token("FLOAT_LITERAL", yytext, line_number); 
                         yylval.fval = atof(yytext); return FLOAT_LITERAL_TOKEN; }
+\"[^\"]*\"          {add_token("STRING_LITERAL", yytext, line_number);
+                        strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
+                        yylval.str[sizeof(yylval.str)-1] = '\0';
+                        return STRING_LITERAL_TOKEN;}
 [a-zA-Z_][a-zA-Z0-9_]* {add_token("IDENTIFIER", yytext, line_number);
                             strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                             yylval.str[sizeof(yylval.str)-1] = '\0';
                             return IDENTIFIER_TOKEN;}
-
 
 .                   { add_token("UNKNOWN", yytext, line_number); }
 
