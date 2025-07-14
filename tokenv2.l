@@ -106,6 +106,7 @@ void write_tokens_and_variables() {
 
 /* === PALABRAS CLAVE === */
 "if"                { add_token("IF", yytext, line_number); return IF_TOKEN; }
+"elseif"            { add_token("ELSEIF", yytext, line_number); return ELSEIF_TOKEN; }
 "else"              { add_token("ELSE", yytext, line_number); return ELSE_TOKEN; }
 "while"             { add_token("WHILE", yytext, line_number); return WHILE_TOKEN; }
 "for"               { add_token("FOR", yytext, line_number); return FOR_TOKEN; }
@@ -120,6 +121,7 @@ void write_tokens_and_variables() {
 "main"              { add_token("MAIN", yytext, line_number); return MAIN_TOKEN; }
 "program"           { add_token("PROGRAM", yytext, line_number); return PROGRAM_TOKEN; }
 "print"             { add_token("PRINT", yytext, line_number); return PRINT_TOKEN; }
+"read"              { add_token("READ", yytext, line_number); return READ_TOKEN; }
 "to"                { add_token("TO", yytext, line_number); return TO_TOKEN; }
 
 /* === OPERADORES RELACIONALES Y ARITMÉTICOS === */
