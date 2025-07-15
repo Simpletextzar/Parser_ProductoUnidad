@@ -1,104 +1,230 @@
 %{
 #include <stdio.h>
-#include <string.h>
-void yyerror(const char *s);
-int yylex(void);
-extern FILE *yyin; 
-extern void write_tokens_and_variables();
-extern void add_variable(char*, char*, char*, int);
-extern int line_number;
+#include <stdlib.h> // Para exit()
+#include <string.h> // Necesario para strncpy si se reintroducen acciones semánticas
+
+// External function declarations from lexer, ajustadas a la notación proporcionada
+void yyerror(const char *s); // Declaración de yyerror
+int yylex(void);             // Declaración de yylex
+extern FILE *yyin;           // Declaración de yyin
+extern int line_number;      // Usando line_number directamente
+
+
 %}
 
+// --- DEFINICIÓN DE LA UNIÓN YYSTYPE ---
+// Necesaria para que Bison sepa cómo pasar valores entre tokens y reglas.
+// Se usa el tamaño 128 directamente, eliminando MAX_VALUE_LEN.
 %union {
-    char str[128];	
     int number;
-    double fval;
+    float fval;
+    char str[128]; // Tamaño fijo, como en tu ejemplo
 }
 
-%token IF_TOKEN
-%token ELSE_TOKEN
-%token WHILE_TOKEN
-%token FOR_TOKEN
-%token RETURN_TOKEN
-%token INT_TOKEN
-%token FLOAT_TOKEN
-%token BOOL_TOKEN
-%token <str> BOOL_LITERAL_TOKEN
-%token VOID_TOKEN
-%token VAR_TOKEN
-
-%token EQ_TOKEN
-%token NEQ_TOKEN
-%token LE_TOKEN
-%token GE_TOKEN
-%token LT_TOKEN
-%token GT_TOKEN
-%token EQUALS_TOKEN
-%token PLUS_TOKEN
-%token MINUS_TOKEN
-%token MUL_TOKEN
-%token DIV_TOKEN
-%token LPAREN_TOKEN
-%token RPAREN_TOKEN
-%token LBRACE_TOKEN
-%token RBRACE_TOKEN
-%token COLON_TOKEN
-%token SEMICOLON_TOKEN
-%token COMMA_TOKEN
-
+// Token declarations (terminals) - MUST MATCH lexer.l EXACTLY
+%token <str> IDENTIFIER_TOKEN
 %token <number> NUMBER_TOKEN
 %token <fval> FLOAT_LITERAL_TOKEN
-%token <str> IDENTIFIER_TOKEN
-%token UNKNOWN_TOKEN
+%token <str> STRING_LITERAL_TOKEN
+%token <str> BOOL_LITERAL_TOKEN
 
-%type <str> type
-%type <str> value
+%token IF_TOKEN ELSE_TOKEN WHILE_TOKEN FOR_TOKEN RETURN_TOKEN
+%token INT_TOKEN FLOAT_TOKEN BOOL_TOKEN STRING_TOKEN VOID_TOKEN VAR_TOKEN FUNC_TOKEN MAIN_TOKEN PROGRAM_TOKEN PRINT_TOKEN TO_TOKEN READ_TOKEN ELSEIF_TOKEN
+
+%token EQ_TOKEN NEQ_TOKEN LE_TOKEN GE_TOKEN LT_TOKEN GT_TOKEN EQUALS_TOKEN
+%token PLUS_TOKEN MINUS_TOKEN MUL_TOKEN DIV_TOKEN MOD_TOKEN
+%token LPAREN_TOKEN RPAREN_TOKEN LBRACE_TOKEN RBRACE_TOKEN COLON_TOKEN SEMICOLON_TOKEN COMMA_TOKEN
+%token AND_TOKEN OR_TOKEN NOT_TOKEN
+
+// Operator Precedence and Associativity (from lowest to highest precedence)
+%left OR_TOKEN
+%left AND_TOKEN
+%nonassoc EQ_TOKEN NEQ_TOKEN LT_TOKEN LE_TOKEN GT_TOKEN GE_TOKEN
+%left PLUS_TOKEN MINUS_TOKEN
+%left MUL_TOKEN DIV_TOKEN MOD_TOKEN
+%right NOT_TOKEN
+
+// Type declarations for non-terminals (only for syntactic structure)
+// No se necesita <str> para estos tipos si no hay acciones semánticas que asignen a $$.str
+// Sin embargo, se mantienen por consistencia con la GLC original y para futuras expansiones.
+%type <str> EXPRESSION LOGIC_EXPRESSION EXPR_AND EXPR_NEGATION COMPARISON_EXPRESSION ARITHMETIC_EXPRESSION TERM FACTOR
+%type <str> COMPARISON_OP
+%type <str> FUN_DECLARATION PARAMETERS_OPTIONAL PARAMETERS_LIST BLOCK STATEMENT_LIST STATEMENT DECLARATION ASSIGNMENT IF_STATEMENT FOR_LOOP WHILE_LOOP PRINT_STATEMENT READ_STATEMENT RETURN_STATEMENT IF_THEN_ELSE IF_THEN ELSE_PART FUN_MAIN identifier_init_list identifier_init
+
+%%
+
+// Grammar Rules (Non-terminals) - No semantic actions, just structural
+S: FUN_DECLARATION_LIST FUN_MAIN
+;
+
+FUN_DECLARATION_LIST: /* empty */
+| FUN_DECLARATION_LIST FUN_DECLARATION
+;
+
+FUN_DECLARATION: FUNC_TOKEN IDENTIFIER_TOKEN LPAREN_TOKEN PARAMETERS_OPTIONAL RPAREN_TOKEN BLOCK;
+
+PARAMETERS_OPTIONAL: PARAMETERS_LIST
+| /* epsilon */
+;
+
+PARAMETERS_LIST: IDENTIFIER_TOKEN
+| PARAMETERS_LIST COMMA_TOKEN IDENTIFIER_TOKEN
+;
+
+BLOCK: LBRACE_TOKEN STATEMENT_LIST RBRACE_TOKEN
+;
+
+STATEMENT_LIST: /* empty */
+| STATEMENT_LIST STATEMENT
+;
+
+STATEMENT: DECLARATION
+| ASSIGNMENT
+| IF_STATEMENT
+| FOR_LOOP
+| WHILE_LOOP
+| PRINT_STATEMENT
+| READ_STATEMENT
+| RETURN_STATEMENT
+| FUNCTION_CALL_STATEMENT
+;
+
+FUNCTION_CALL_STATEMENT: IDENTIFIER_TOKEN LPAREN_TOKEN ARGUMENTS_OPTIONAL RPAREN_TOKEN SEMICOLON_TOKEN;
+
+DECLARATION: INT_TOKEN COLON_TOKEN identifier_init_list SEMICOLON_TOKEN
+| FLOAT_TOKEN COLON_TOKEN identifier_init_list SEMICOLON_TOKEN
+| BOOL_TOKEN COLON_TOKEN identifier_init_list SEMICOLON_TOKEN
+| STRING_TOKEN COLON_TOKEN identifier_init_list SEMICOLON_TOKEN
+| VOID_TOKEN COLON_TOKEN identifier_init_list SEMICOLON_TOKEN
+;
+
+identifier_init_list: identifier_init
+| identifier_init_list identifier_init
+;
+
+identifier_init: IDENTIFIER_TOKEN
+| IDENTIFIER_TOKEN EQUALS_TOKEN EXPRESSION
+;
+
+ASSIGNMENT: IDENTIFIER_TOKEN EQUALS_TOKEN EXPRESSION SEMICOLON_TOKEN
+;
+
+PRINT_STATEMENT: PRINT_TOKEN LPAREN_TOKEN EXPRESSION RPAREN_TOKEN SEMICOLON_TOKEN
+;
+
+READ_STATEMENT: READ_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN SEMICOLON_TOKEN
+;
+
+RETURN_STATEMENT: RETURN_TOKEN EXPRESSION SEMICOLON_TOKEN
+| RETURN_TOKEN SEMICOLON_TOKEN
+;
+
+IF_STATEMENT: IF_THEN_ELSE
+| IF_THEN
+;
+
+IF_THEN_ELSE: IF_TOKEN LPAREN_TOKEN EXPRESSION RPAREN_TOKEN BLOCK ELSE_PART
+;
+
+IF_THEN: IF_TOKEN LPAREN_TOKEN EXPRESSION RPAREN_TOKEN BLOCK
+;
+
+ELSE_PART: ELSE_TOKEN BLOCK
+| ELSEIF_TOKEN LPAREN_TOKEN EXPRESSION RPAREN_TOKEN BLOCK ELSE_PART
+;
+
+FOR_LOOP: FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN EXPRESSION TO_TOKEN EXPRESSION RPAREN_TOKEN BLOCK;
+
+
+WHILE_LOOP: WHILE_TOKEN LPAREN_TOKEN LOGIC_EXPRESSION RPAREN_TOKEN BLOCK
+;
+
+FUN_MAIN: MAIN_TOKEN PROGRAM_TOKEN LPAREN_TOKEN RPAREN_TOKEN BLOCK
+;
+
+EXPRESSION: LOGIC_EXPRESSION
+;
+
+LOGIC_EXPRESSION: EXPR_AND
+| LOGIC_EXPRESSION OR_TOKEN EXPR_AND
+;
+
+EXPR_AND: EXPR_NEGATION
+| EXPR_AND AND_TOKEN EXPR_NEGATION
+;
+
+EXPR_NEGATION: NOT_TOKEN EXPR_NEGATION
+| COMPARISON_EXPRESSION
+| ARITHMETIC_EXPRESSION
+;
+
+COMPARISON_EXPRESSION: ARITHMETIC_EXPRESSION COMPARISON_OP ARITHMETIC_EXPRESSION
+;
+
+COMPARISON_OP: LT_TOKEN
+| GT_TOKEN
+| EQ_TOKEN
+| NEQ_TOKEN
+| LE_TOKEN
+| GE_TOKEN
+;
+
+ARITHMETIC_EXPRESSION: TERM
+| ARITHMETIC_EXPRESSION PLUS_TOKEN TERM
+| ARITHMETIC_EXPRESSION MINUS_TOKEN TERM
+;
+
+
+TERM: FACTOR
+| TERM MUL_TOKEN FACTOR
+| TERM DIV_TOKEN FACTOR
+| TERM MOD_TOKEN FACTOR
+;
+
+ARGUMENTS_OPTIONAL: ARGUMENTS
+                  | /* epsilon */
+                  ;
+
+ARGUMENTS: EXPRESSION
+         | ARGUMENTS COMMA_TOKEN EXPRESSION
+         ;
+
+
+FACTOR: IDENTIFIER_TOKEN
+      | IDENTIFIER_TOKEN LPAREN_TOKEN ARGUMENTS_OPTIONAL RPAREN_TOKEN
+      | NUMBER_TOKEN
+      | FLOAT_LITERAL_TOKEN
+      | STRING_LITERAL_TOKEN
+      | BOOL_LITERAL_TOKEN
+      | LPAREN_TOKEN EXPRESSION RPAREN_TOKEN;
 
 
 %%
-prog:
-      /* empty */
-    | prog statement
-    ;
 
-statement:
-    VAR_TOKEN IDENTIFIER_TOKEN COLON_TOKEN type EQUALS_TOKEN value SEMICOLON_TOKEN
-    {
-        printf("Declaration: %s : %s = %s;\n", $2, $4, $6);
-        add_variable($2, $6, $4, line_number);
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Uso: %s <archivo_fuente>\n", argv[0]);
+        return 1;
     }
-    | error SEMICOLON_TOKEN
-        { yyerrok; }
-    ;
 
-type:
-    INT_TOKEN    { strcpy($$, "int"); }
-    | FLOAT_TOKEN { strcpy($$, "float"); }
-    | BOOL_TOKEN  { strcpy($$, "bool"); }
-    ;
+    yyin = fopen(argv[1], "r");
+    if (!yyin) {
+        perror("No se pudo abrir el archivo de entrada");
+        return 1;
+    }
 
-value:
-    NUMBER_TOKEN         { sprintf($$, "%d", $1); }
-    | FLOAT_LITERAL_TOKEN { sprintf($$, "%f", $1); }
-    | BOOL_LITERAL_TOKEN  { strcpy($$, $1); }
-    ;
+    printf("Iniciando análisis sintáctico...\n");
+    if (yyparse() == 0) {
+        printf("Análisis sintáctico completado con éxito.\n");
+    } else {
+        printf("Análisis sintáctico fallido.\n");
+    }
 
-
-%%
-
-void yyerror(const char *s) {
-    
+    fclose(yyin);
+    return 0;
 }
 
-int main() {
-    FILE *file = fopen("read_file.txt", "r");
-    if (file) {
-        yyin = file;
-    }
-    yyparse();
-    if (file) {
-        fclose(file);
-    }
-    write_tokens_and_variables();
-    return 0;
+void yyerror(const char *s) {
+    fprintf(stderr, "Error de sintaxis en la línea %d: %s\n", line_number, s);
 }
