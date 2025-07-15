@@ -207,7 +207,13 @@ int main() {
     if (file) {
         yyin = file;
     }
-    yyparse();
+    printf("Iniciando análisis sintáctico...\n");
+    if (yyparse() == 0) {
+        printf("Análisis sintáctico completado con éxito.\n");
+    } else {
+        printf("Análisis sintáctico fallido.\n");
+    }
+    return 0;
     if (file) {
         fclose(file);
     }
