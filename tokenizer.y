@@ -207,20 +207,19 @@ int main() {
     if (file) {
         yyin = file;
     }
-    printf("Iniciando análisis sintáctico...\n");
+    printf("Iniciando analisis sintactico...\n");
     if (yyparse() == 0) {
-        printf("Análisis sintáctico completado con éxito.\n");
+        printf("Analisis sintactico completado con exito.\n");
     } else {
-        printf("Análisis sintáctico fallido.\n");
+        printf("Analisis sintactico fallido.\n");
     }
-    return 0;
     if (file) {
         fclose(file);
     }
-    write_tokens_and_variables();
+    write_tokens();
     return 0;
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error de sintaxis en la línea %d: %s\n", line_number, s);
+    fprintf(stderr, "Error de sintaxis en la linea %d: %s\n", line_number, s);
 }

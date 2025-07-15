@@ -562,10 +562,9 @@ void add_variable(const char* name, const char* value, const char* type, int lin
     }
 }
 
-void write_tokens_and_variables() {
+void write_tokens() {
     FILE *tokfile = fopen("tokens_output.txt", "w");
-    FILE *varfile = fopen("variables.txt", "w");
-    if (!tokfile || !varfile) return;
+    if (!tokfile) return;
 
     fprintf(tokfile, "%-15s %-20s %-12s\n", "Token", "Value", "Line Number");
     fprintf(tokfile, "-----------------------------------------------\n");
@@ -574,21 +573,12 @@ void write_tokens_and_variables() {
             tokens[i].type, tokens[i].value, tokens[i].line);
     }
 
-    // Write all variables with name, value, type, and line
-    fprintf(varfile, "%-15s %-15s %-10s %-10s\n", "Name", "Value", "Type", "Line");
-    fprintf(varfile, "-----------------------------------------------\n");
-    for (int i = 0; i < variable_count; ++i) {
-        fprintf(varfile, "%-15s %-15s %-10s %-10d\n",
-           variables[i].name, variables[i].value, variables[i].type, variables[i].line);
-    }
-
     fclose(tokfile);
-    fclose(varfile);
 }
 
 
-#line 590 "lex.yy.c"
-#line 591 "lex.yy.c"
+#line 580 "lex.yy.c"
+#line 581 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -805,10 +795,10 @@ YY_DECL
 		}
 
 	{
-#line 77 "tokenv2.l"
+#line 67 "tokenv2.l"
 
 
-#line 811 "lex.yy.c"
+#line 801 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -867,213 +857,213 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 79 "tokenv2.l"
+#line 69 "tokenv2.l"
 ; /* Ignore whitespace */
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 80 "tokenv2.l"
+#line 70 "tokenv2.l"
 {line_number++;}/* Ignore newlines */
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 81 "tokenv2.l"
+#line 71 "tokenv2.l"
 ; /* Ignore single-line comments */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 83 "tokenv2.l"
+#line 73 "tokenv2.l"
 { add_token("IF", yytext, line_number); return IF_TOKEN; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 84 "tokenv2.l"
+#line 74 "tokenv2.l"
 { add_token("ELSE", yytext, line_number); return ELSE_TOKEN; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 85 "tokenv2.l"
+#line 75 "tokenv2.l"
 { add_token("WHILE", yytext, line_number); return WHILE_TOKEN; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 86 "tokenv2.l"
+#line 76 "tokenv2.l"
 { add_token("FOR", yytext, line_number); return FOR_TOKEN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 87 "tokenv2.l"
+#line 77 "tokenv2.l"
 { add_token("RETURN", yytext, line_number); return RETURN_TOKEN; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 88 "tokenv2.l"
+#line 78 "tokenv2.l"
 { add_token("INT", yytext, line_number); return INT_TOKEN; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 89 "tokenv2.l"
+#line 79 "tokenv2.l"
 { add_token("FLOAT", yytext, line_number); return FLOAT_TOKEN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 90 "tokenv2.l"
+#line 80 "tokenv2.l"
 { add_token("BOOL", yytext, line_number); return BOOL_TOKEN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 91 "tokenv2.l"
+#line 81 "tokenv2.l"
 { add_token("STRING", yytext, line_number); return STRING_TOKEN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 92 "tokenv2.l"
+#line 82 "tokenv2.l"
 { add_token("VOID", yytext, line_number); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 93 "tokenv2.l"
+#line 83 "tokenv2.l"
 { add_token("VAR", yytext, line_number); sscanf(yytext, "%s", yylval.str); return VAR_TOKEN; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 94 "tokenv2.l"
+#line 84 "tokenv2.l"
 { add_token("FUNC", yytext, line_number); return FUNC_TOKEN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 95 "tokenv2.l"
+#line 85 "tokenv2.l"
 { add_token("MAIN", yytext, line_number); return MAIN_TOKEN; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 96 "tokenv2.l"
+#line 86 "tokenv2.l"
 { add_token("PROGRAM", yytext, line_number); return PROGRAM_TOKEN; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 97 "tokenv2.l"
+#line 87 "tokenv2.l"
 { add_token("PRINT", yytext, line_number); return PRINT_TOKEN; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 98 "tokenv2.l"
+#line 88 "tokenv2.l"
 { add_token("TO", yytext, line_number); return TO_TOKEN; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 101 "tokenv2.l"
+#line 91 "tokenv2.l"
 { add_token("EQ", yytext, line_number); return EQ_TOKEN; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 102 "tokenv2.l"
+#line 92 "tokenv2.l"
 { add_token("NEQ", yytext, line_number); return NEQ_TOKEN; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 103 "tokenv2.l"
+#line 93 "tokenv2.l"
 { add_token("LE", yytext, line_number); return LE_TOKEN; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 104 "tokenv2.l"
+#line 94 "tokenv2.l"
 { add_token("GE", yytext, line_number); return GE_TOKEN; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 105 "tokenv2.l"
+#line 95 "tokenv2.l"
 { add_token("LT", yytext, line_number); return LT_TOKEN; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 106 "tokenv2.l"
+#line 96 "tokenv2.l"
 { add_token("GT", yytext, line_number); return GT_TOKEN; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 107 "tokenv2.l"
+#line 97 "tokenv2.l"
 { add_token("EQUALS", yytext, line_number); return EQUALS_TOKEN; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 108 "tokenv2.l"
+#line 98 "tokenv2.l"
 { add_token("PLUS", yytext, line_number); return PLUS_TOKEN; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 109 "tokenv2.l"
+#line 99 "tokenv2.l"
 { add_token("MINUS", yytext, line_number); return MINUS_TOKEN; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 110 "tokenv2.l"
+#line 100 "tokenv2.l"
 { add_token("MUL", yytext, line_number); return MUL_TOKEN; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 111 "tokenv2.l"
+#line 101 "tokenv2.l"
 { add_token("DIV", yytext, line_number); return DIV_TOKEN; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 112 "tokenv2.l"
+#line 102 "tokenv2.l"
 { add_token("MOD", yytext, line_number); return MOD_TOKEN; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 113 "tokenv2.l"
+#line 103 "tokenv2.l"
 { add_token("LPAREN", yytext, line_number); return LPAREN_TOKEN; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 114 "tokenv2.l"
+#line 104 "tokenv2.l"
 { add_token("RPAREN", yytext, line_number); return RPAREN_TOKEN; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 115 "tokenv2.l"
+#line 105 "tokenv2.l"
 { add_token("LBRACE", yytext, line_number); return LBRACE_TOKEN; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 116 "tokenv2.l"
+#line 106 "tokenv2.l"
 { add_token("RBRACE", yytext, line_number); return RBRACE_TOKEN; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 117 "tokenv2.l"
+#line 107 "tokenv2.l"
 { add_token("COLON", yytext, line_number); return COLON_TOKEN; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 118 "tokenv2.l"
+#line 108 "tokenv2.l"
 { add_token("SEMICOLON", yytext, line_number); return SEMICOLON_TOKEN; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 119 "tokenv2.l"
+#line 109 "tokenv2.l"
 { add_token("COMMA", yytext, line_number); return COMMA_TOKEN; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 121 "tokenv2.l"
+#line 111 "tokenv2.l"
 { add_token("AND", yytext, line_number); return AND_TOKEN; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 122 "tokenv2.l"
+#line 112 "tokenv2.l"
 { add_token("OR", yytext, line_number); return OR_TOKEN; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 123 "tokenv2.l"
+#line 113 "tokenv2.l"
 { add_token("NOT", yytext, line_number); return NOT_TOKEN; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 125 "tokenv2.l"
+#line 115 "tokenv2.l"
 { add_token("BOOL_LITERAL", yytext, line_number);
                         strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                         yylval.str[sizeof(yylval.str)-1] = '\0';
@@ -1081,20 +1071,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 129 "tokenv2.l"
+#line 119 "tokenv2.l"
 { add_token("NUMBER", yytext, line_number); 
                         yylval.number = atoi(yytext); return NUMBER_TOKEN; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 131 "tokenv2.l"
+#line 121 "tokenv2.l"
 { add_token("FLOAT_LITERAL", yytext, line_number); 
                         yylval.fval = atof(yytext); return FLOAT_LITERAL_TOKEN; }
 	YY_BREAK
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 133 "tokenv2.l"
+#line 123 "tokenv2.l"
 {add_token("STRING_LITERAL", yytext, line_number);
                         strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                         yylval.str[sizeof(yylval.str)-1] = '\0';
@@ -1102,7 +1092,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 137 "tokenv2.l"
+#line 127 "tokenv2.l"
 {add_token("IDENTIFIER", yytext, line_number);
                             strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                             yylval.str[sizeof(yylval.str)-1] = '\0';
@@ -1110,15 +1100,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 142 "tokenv2.l"
+#line 132 "tokenv2.l"
 { add_token("UNKNOWN", yytext, line_number); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 144 "tokenv2.l"
+#line 134 "tokenv2.l"
 ECHO;
 	YY_BREAK
-#line 1121 "lex.yy.c"
+#line 1111 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2123,7 +2113,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 144 "tokenv2.l"
+#line 134 "tokenv2.l"
 
 
 yywrap(){return 1;}
