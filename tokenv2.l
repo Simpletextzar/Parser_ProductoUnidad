@@ -92,19 +92,15 @@ void write_tokens_and_variables() {
 }
 %}
 
-%%
 /* === REGLAS LÉXICAS === */
 
-/* Ignorar espacios en blanco y tabulaciones */
+%%
 [ \t]+              ;
 
-/* Contar saltos de línea */
 \n                  {line_number++;}
 
-/* Ignorar comentarios de una línea */
 \/\/.*              ;
 
-/* === PALABRAS CLAVE === */
 "if"                { add_token("IF", yytext, line_number); return IF_TOKEN; }
 "elseif"            { add_token("ELSEIF", yytext, line_number); return ELSEIF_TOKEN; }
 "else"              { add_token("ELSE", yytext, line_number); return ELSE_TOKEN; }
@@ -124,7 +120,6 @@ void write_tokens_and_variables() {
 "read"              { add_token("READ", yytext, line_number); return READ_TOKEN; }
 "to"                { add_token("TO", yytext, line_number); return TO_TOKEN; }
 
-/* === OPERADORES RELACIONALES Y ARITMÉTICOS === */
 "=="                { add_token("EQ", yytext, line_number); return EQ_TOKEN; }
 "!="                { add_token("NEQ", yytext, line_number); return NEQ_TOKEN; }
 "<="                { add_token("LE", yytext, line_number); return LE_TOKEN; }
@@ -138,7 +133,6 @@ void write_tokens_and_variables() {
 "/"                 { add_token("DIV", yytext, line_number); return DIV_TOKEN; }
 "%"                 { add_token("MOD", yytext, line_number); return MOD_TOKEN; }
 
-/* === SÍMBOLOS DE AGRUPACIÓN === */
 "("                 { add_token("LPAREN", yytext, line_number); return LPAREN_TOKEN; }
 ")"                 { add_token("RPAREN", yytext, line_number); return RPAREN_TOKEN; }
 "{"                 { add_token("LBRACE", yytext, line_number); return LBRACE_TOKEN; }
@@ -147,12 +141,10 @@ void write_tokens_and_variables() {
 ";"                 { add_token("SEMICOLON", yytext, line_number); return SEMICOLON_TOKEN; }
 ","                 { add_token("COMMA", yytext, line_number); return COMMA_TOKEN; }
 
-/* === OPERADORES LÓGICOS === */
 "&&"                { add_token("AND", yytext, line_number); return AND_TOKEN; }
 "\\|\\|"            { add_token("OR", yytext, line_number); return OR_TOKEN; }
 "!"                 { add_token("NOT", yytext, line_number); return NOT_TOKEN; }
 
-/* === LITERALES === */
 (true|false)        { add_token("BOOL_LITERAL", yytext, line_number);
                       strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                       yylval.str[sizeof(yylval.str)-1] = '\0';
@@ -169,13 +161,11 @@ void write_tokens_and_variables() {
                       yylval.str[sizeof(yylval.str)-1] = '\0';
                       return STRING_LITERAL_TOKEN; }
 
-/* === IDENTIFICADORES === */
 [a-zA-Z_][a-zA-Z0-9_]* { add_token("IDENTIFIER", yytext, line_number);
                          strncpy(yylval.str, yytext, sizeof(yylval.str)-1);
                          yylval.str[sizeof(yylval.str)-1] = '\0';
                          return IDENTIFIER_TOKEN;}
 
-/* === CUALQUIER OTRO CARÁCTER === */
 .                   { add_token("UNKNOWN", yytext, line_number); }
 
 %%
