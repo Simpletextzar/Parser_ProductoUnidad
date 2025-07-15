@@ -47,10 +47,9 @@ void add_variable(const char* name, const char* value, const char* type, int lin
     }
 }
 
-void write_tokens_and_variables() {
+void write_tokens() {
     FILE *tokfile = fopen("tokens_output.txt", "w");
-    FILE *varfile = fopen("variables.txt", "w");
-    if (!tokfile || !varfile) return;
+    if (!tokfile) return;
 
     fprintf(tokfile, "%-15s %-20s %-12s\n", "Token", "Value", "Line Number");
     fprintf(tokfile, "-----------------------------------------------\n");
@@ -59,16 +58,7 @@ void write_tokens_and_variables() {
             tokens[i].type, tokens[i].value, tokens[i].line);
     }
 
-    // Write all variables with name, value, type, and line
-    fprintf(varfile, "%-15s %-15s %-10s %-10s\n", "Name", "Value", "Type", "Line");
-    fprintf(varfile, "-----------------------------------------------\n");
-    for (int i = 0; i < variable_count; ++i) {
-        fprintf(varfile, "%-15s %-15s %-10s %-10d\n",
-           variables[i].name, variables[i].value, variables[i].type, variables[i].line);
-    }
-
     fclose(tokfile);
-    fclose(varfile);
 }
 
 
