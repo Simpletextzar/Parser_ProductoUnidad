@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <string.h>
 #include "tokeni2.tab.h"
 FILE *out_file;
 int line_number = 1;
@@ -143,4 +144,4 @@ void write_tokens_and_variables() {
 
 %%
 
-yywrap(){return 1;}
+int yywrap(void) { return 1; }
