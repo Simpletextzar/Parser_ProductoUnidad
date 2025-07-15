@@ -1,0 +1,1352 @@
+Terminals unused in grammar
+
+   VOID_TOKEN
+
+
+Estado 57 conflictos: 2 reducción(ones)/reducción(ones)
+
+
+Gramática
+
+    0 $accept: prog $end
+
+    1 prog: fun_declarations fun_main
+
+    2 fun_declarations: /* vacío */
+    3                 | fun_declarations fun_declaration
+
+    4 fun_declaration: IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
+
+    5 parameters_optional: /* vacío */
+    6                    | parameters_list
+
+    7 parameters_list: IDENTIFIER_TOKEN
+    8                | IDENTIFIER_TOKEN COMMA_TOKEN parameters_list
+
+    9 fun_main: MAIN_TOKEN LPAREN_TOKEN RPAREN_TOKEN block
+
+   10 block: LBRACE_TOKEN statement_list RBRACE_TOKEN
+
+   11 statement_list: /* vacío */
+   12               | statement_list statement
+
+   13 statement: declaration
+   14          | assignment
+   15          | if_statement
+   16          | for_loop
+   17          | while_loop
+   18          | print_statement
+   19          | read_statement
+   20          | return_statement
+
+   21 declaration: type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+   22            | type COLON_TOKEN IDENTIFIER_TOKEN SEMICOLON_TOKEN
+
+   23 assignment: IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+
+   24 print_statement: PRINT_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN SEMICOLON_TOKEN
+
+   25 read_statement: READ_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN SEMICOLON_TOKEN
+
+   26 return_statement: RETURN_TOKEN expression SEMICOLON_TOKEN
+   27                 | RETURN_TOKEN SEMICOLON_TOKEN
+
+   28 if_statement: IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block
+   29             | IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block else_part
+
+   30 else_part: ELSE_TOKEN block
+   31          | ELSEIF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block else_part
+
+   32 for_loop: FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN block
+
+   33 while_loop: WHILE_TOKEN LPAREN_TOKEN logic_expression RPAREN_TOKEN block
+
+   34 type: INT_TOKEN
+   35     | FLOAT_TOKEN
+   36     | BOOL_TOKEN
+
+   37 expression: logic_expression
+   38           | arithmetic_expression
+
+   39 logic_expression: expr_and
+   40                 | expr_and OR_TOKEN logic_expression
+
+   41 expr_and: expr_negacion
+   42         | expr_negacion AND_TOKEN expr_and
+
+   43 expr_negacion: NOT_TOKEN expr_negacion
+   44              | expr_comparacion
+
+   45 expr_comparacion: arithmetic_expression
+   46                 | arithmetic_expression op_comparacion arithmetic_expression
+
+   47 op_comparacion: LT_TOKEN
+   48               | GT_TOKEN
+   49               | EQ_TOKEN
+   50               | NEQ_TOKEN
+   51               | LE_TOKEN
+   52               | GE_TOKEN
+
+   53 arithmetic_expression: term
+   54                      | term PLUS_TOKEN arithmetic_expression
+   55                      | term MINUS_TOKEN arithmetic_expression
+
+   56 term: factor
+   57     | factor MUL_TOKEN term
+   58     | factor DIV_TOKEN term
+
+   59 factor: IDENTIFIER_TOKEN
+   60       | NUMBER_TOKEN
+   61       | FLOAT_LITERAL_TOKEN
+   62       | BOOL_LITERAL_TOKEN
+   63       | LPAREN_TOKEN expression RPAREN_TOKEN
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+error (256)
+IF_TOKEN (258) 28 29
+ELSE_TOKEN (259) 30
+ELSEIF_TOKEN (260) 31
+WHILE_TOKEN (261) 33
+FOR_TOKEN (262) 32
+RETURN_TOKEN (263) 26 27
+INT_TOKEN (264) 34
+FLOAT_TOKEN (265) 35
+BOOL_TOKEN (266) 36
+VOID_TOKEN (267)
+PRINT_TOKEN (268) 24
+READ_TOKEN (269) 25
+MAIN_TOKEN (270) 9
+BOOL_LITERAL_TOKEN (271) 62
+NUMBER_TOKEN (272) 60
+FLOAT_LITERAL_TOKEN (273) 61
+IDENTIFIER_TOKEN (274) 4 7 8 21 22 23 25 32 59
+EQ_TOKEN (275) 49
+NEQ_TOKEN (276) 50
+LE_TOKEN (277) 51
+GE_TOKEN (278) 52
+LT_TOKEN (279) 47
+GT_TOKEN (280) 48
+EQUALS_TOKEN (281) 21 23
+PLUS_TOKEN (282) 54
+MINUS_TOKEN (283) 55
+MUL_TOKEN (284) 57
+DIV_TOKEN (285) 58
+NOT_TOKEN (286) 43
+AND_TOKEN (287) 42
+OR_TOKEN (288) 40
+LPAREN_TOKEN (289) 4 9 24 25 28 29 31 32 33 63
+RPAREN_TOKEN (290) 4 9 24 25 28 29 31 32 33 63
+LBRACE_TOKEN (291) 10
+RBRACE_TOKEN (292) 10
+COLON_TOKEN (293) 21 22
+SEMICOLON_TOKEN (294) 21 22 23 24 25 26 27
+COMMA_TOKEN (295) 8
+LOWER_THAN_ELSE (296)
+
+
+No terminales con las reglas donde aparecen
+
+$accept (42)
+    en la izquierda: 0
+prog (43)
+    en la izquierda: 1, en la derecha: 0
+fun_declarations (44)
+    en la izquierda: 2 3, en la derecha: 1 3
+fun_declaration (45)
+    en la izquierda: 4, en la derecha: 3
+parameters_optional (46)
+    en la izquierda: 5 6, en la derecha: 4
+parameters_list (47)
+    en la izquierda: 7 8, en la derecha: 6 8
+fun_main (48)
+    en la izquierda: 9, en la derecha: 1
+block (49)
+    en la izquierda: 10, en la derecha: 4 9 28 29 30 31 32 33
+statement_list (50)
+    en la izquierda: 11 12, en la derecha: 10 12
+statement (51)
+    en la izquierda: 13 14 15 16 17 18 19 20, en la derecha: 12
+declaration (52)
+    en la izquierda: 21 22, en la derecha: 13
+assignment (53)
+    en la izquierda: 23, en la derecha: 14
+print_statement (54)
+    en la izquierda: 24, en la derecha: 18
+read_statement (55)
+    en la izquierda: 25, en la derecha: 19
+return_statement (56)
+    en la izquierda: 26 27, en la derecha: 20
+if_statement (57)
+    en la izquierda: 28 29, en la derecha: 15
+else_part (58)
+    en la izquierda: 30 31, en la derecha: 29 31
+for_loop (59)
+    en la izquierda: 32, en la derecha: 16
+while_loop (60)
+    en la izquierda: 33, en la derecha: 17
+type (61)
+    en la izquierda: 34 35 36, en la derecha: 21 22
+expression (62)
+    en la izquierda: 37 38, en la derecha: 21 23 24 26 28 29 31 63
+logic_expression (63)
+    en la izquierda: 39 40, en la derecha: 33 37 40
+expr_and (64)
+    en la izquierda: 41 42, en la derecha: 39 40 42
+expr_negacion (65)
+    en la izquierda: 43 44, en la derecha: 41 42 43
+expr_comparacion (66)
+    en la izquierda: 45 46, en la derecha: 44
+op_comparacion (67)
+    en la izquierda: 47 48 49 50 51 52, en la derecha: 46
+arithmetic_expression (68)
+    en la izquierda: 53 54 55, en la derecha: 38 45 46 54 55
+term (69)
+    en la izquierda: 56 57 58, en la derecha: 53 54 55 57 58
+factor (70)
+    en la izquierda: 59 60 61 62 63, en la derecha: 56 57 58
+
+
+estado 0
+
+    0 $accept: . prog $end
+
+    $default  reduce usando la regla 2 (fun_declarations)
+
+    prog              ir al estado 1
+    fun_declarations  ir al estado 2
+
+
+estado 1
+
+    0 $accept: prog . $end
+
+    $end  desplazar e ir al estado 3
+
+
+estado 2
+
+    1 prog: fun_declarations . fun_main
+    3 fun_declarations: fun_declarations . fun_declaration
+
+    MAIN_TOKEN        desplazar e ir al estado 4
+    IDENTIFIER_TOKEN  desplazar e ir al estado 5
+
+    fun_declaration  ir al estado 6
+    fun_main         ir al estado 7
+
+
+estado 3
+
+    0 $accept: prog $end .
+
+    $default  aceptar
+
+
+estado 4
+
+    9 fun_main: MAIN_TOKEN . LPAREN_TOKEN RPAREN_TOKEN block
+
+    LPAREN_TOKEN  desplazar e ir al estado 8
+
+
+estado 5
+
+    4 fun_declaration: IDENTIFIER_TOKEN . LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
+
+    LPAREN_TOKEN  desplazar e ir al estado 9
+
+
+estado 6
+
+    3 fun_declarations: fun_declarations fun_declaration .
+
+    $default  reduce usando la regla 3 (fun_declarations)
+
+
+estado 7
+
+    1 prog: fun_declarations fun_main .
+
+    $default  reduce usando la regla 1 (prog)
+
+
+estado 8
+
+    9 fun_main: MAIN_TOKEN LPAREN_TOKEN . RPAREN_TOKEN block
+
+    RPAREN_TOKEN  desplazar e ir al estado 10
+
+
+estado 9
+
+    4 fun_declaration: IDENTIFIER_TOKEN LPAREN_TOKEN . parameters_optional RPAREN_TOKEN block
+
+    IDENTIFIER_TOKEN  desplazar e ir al estado 11
+
+    $default  reduce usando la regla 5 (parameters_optional)
+
+    parameters_optional  ir al estado 12
+    parameters_list      ir al estado 13
+
+
+estado 10
+
+    9 fun_main: MAIN_TOKEN LPAREN_TOKEN RPAREN_TOKEN . block
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 15
+
+
+estado 11
+
+    7 parameters_list: IDENTIFIER_TOKEN .
+    8                | IDENTIFIER_TOKEN . COMMA_TOKEN parameters_list
+
+    COMMA_TOKEN  desplazar e ir al estado 16
+
+    $default  reduce usando la regla 7 (parameters_list)
+
+
+estado 12
+
+    4 fun_declaration: IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional . RPAREN_TOKEN block
+
+    RPAREN_TOKEN  desplazar e ir al estado 17
+
+
+estado 13
+
+    6 parameters_optional: parameters_list .
+
+    $default  reduce usando la regla 6 (parameters_optional)
+
+
+estado 14
+
+   10 block: LBRACE_TOKEN . statement_list RBRACE_TOKEN
+
+    $default  reduce usando la regla 11 (statement_list)
+
+    statement_list  ir al estado 18
+
+
+estado 15
+
+    9 fun_main: MAIN_TOKEN LPAREN_TOKEN RPAREN_TOKEN block .
+
+    $default  reduce usando la regla 9 (fun_main)
+
+
+estado 16
+
+    8 parameters_list: IDENTIFIER_TOKEN COMMA_TOKEN . parameters_list
+
+    IDENTIFIER_TOKEN  desplazar e ir al estado 11
+
+    parameters_list  ir al estado 19
+
+
+estado 17
+
+    4 fun_declaration: IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN . block
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 20
+
+
+estado 18
+
+   10 block: LBRACE_TOKEN statement_list . RBRACE_TOKEN
+   12 statement_list: statement_list . statement
+
+    IF_TOKEN          desplazar e ir al estado 21
+    WHILE_TOKEN       desplazar e ir al estado 22
+    FOR_TOKEN         desplazar e ir al estado 23
+    RETURN_TOKEN      desplazar e ir al estado 24
+    INT_TOKEN         desplazar e ir al estado 25
+    FLOAT_TOKEN       desplazar e ir al estado 26
+    BOOL_TOKEN        desplazar e ir al estado 27
+    PRINT_TOKEN       desplazar e ir al estado 28
+    READ_TOKEN        desplazar e ir al estado 29
+    IDENTIFIER_TOKEN  desplazar e ir al estado 30
+    RBRACE_TOKEN      desplazar e ir al estado 31
+
+    statement         ir al estado 32
+    declaration       ir al estado 33
+    assignment        ir al estado 34
+    print_statement   ir al estado 35
+    read_statement    ir al estado 36
+    return_statement  ir al estado 37
+    if_statement      ir al estado 38
+    for_loop          ir al estado 39
+    while_loop        ir al estado 40
+    type              ir al estado 41
+
+
+estado 19
+
+    8 parameters_list: IDENTIFIER_TOKEN COMMA_TOKEN parameters_list .
+
+    $default  reduce usando la regla 8 (parameters_list)
+
+
+estado 20
+
+    4 fun_declaration: IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block .
+
+    $default  reduce usando la regla 4 (fun_declaration)
+
+
+estado 21
+
+   28 if_statement: IF_TOKEN . LPAREN_TOKEN expression RPAREN_TOKEN block
+   29             | IF_TOKEN . LPAREN_TOKEN expression RPAREN_TOKEN block else_part
+
+    LPAREN_TOKEN  desplazar e ir al estado 42
+
+
+estado 22
+
+   33 while_loop: WHILE_TOKEN . LPAREN_TOKEN logic_expression RPAREN_TOKEN block
+
+    LPAREN_TOKEN  desplazar e ir al estado 43
+
+
+estado 23
+
+   32 for_loop: FOR_TOKEN . LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN block
+
+    LPAREN_TOKEN  desplazar e ir al estado 44
+
+
+estado 24
+
+   26 return_statement: RETURN_TOKEN . expression SEMICOLON_TOKEN
+   27                 | RETURN_TOKEN . SEMICOLON_TOKEN
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+    SEMICOLON_TOKEN      desplazar e ir al estado 51
+
+    expression             ir al estado 52
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 25
+
+   34 type: INT_TOKEN .
+
+    $default  reduce usando la regla 34 (type)
+
+
+estado 26
+
+   35 type: FLOAT_TOKEN .
+
+    $default  reduce usando la regla 35 (type)
+
+
+estado 27
+
+   36 type: BOOL_TOKEN .
+
+    $default  reduce usando la regla 36 (type)
+
+
+estado 28
+
+   24 print_statement: PRINT_TOKEN . LPAREN_TOKEN expression RPAREN_TOKEN SEMICOLON_TOKEN
+
+    LPAREN_TOKEN  desplazar e ir al estado 60
+
+
+estado 29
+
+   25 read_statement: READ_TOKEN . LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN SEMICOLON_TOKEN
+
+    LPAREN_TOKEN  desplazar e ir al estado 61
+
+
+estado 30
+
+   23 assignment: IDENTIFIER_TOKEN . EQUALS_TOKEN expression SEMICOLON_TOKEN
+
+    EQUALS_TOKEN  desplazar e ir al estado 62
+
+
+estado 31
+
+   10 block: LBRACE_TOKEN statement_list RBRACE_TOKEN .
+
+    $default  reduce usando la regla 10 (block)
+
+
+estado 32
+
+   12 statement_list: statement_list statement .
+
+    $default  reduce usando la regla 12 (statement_list)
+
+
+estado 33
+
+   13 statement: declaration .
+
+    $default  reduce usando la regla 13 (statement)
+
+
+estado 34
+
+   14 statement: assignment .
+
+    $default  reduce usando la regla 14 (statement)
+
+
+estado 35
+
+   18 statement: print_statement .
+
+    $default  reduce usando la regla 18 (statement)
+
+
+estado 36
+
+   19 statement: read_statement .
+
+    $default  reduce usando la regla 19 (statement)
+
+
+estado 37
+
+   20 statement: return_statement .
+
+    $default  reduce usando la regla 20 (statement)
+
+
+estado 38
+
+   15 statement: if_statement .
+
+    $default  reduce usando la regla 15 (statement)
+
+
+estado 39
+
+   16 statement: for_loop .
+
+    $default  reduce usando la regla 16 (statement)
+
+
+estado 40
+
+   17 statement: while_loop .
+
+    $default  reduce usando la regla 17 (statement)
+
+
+estado 41
+
+   21 declaration: type . COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+   22            | type . COLON_TOKEN IDENTIFIER_TOKEN SEMICOLON_TOKEN
+
+    COLON_TOKEN  desplazar e ir al estado 63
+
+
+estado 42
+
+   28 if_statement: IF_TOKEN LPAREN_TOKEN . expression RPAREN_TOKEN block
+   29             | IF_TOKEN LPAREN_TOKEN . expression RPAREN_TOKEN block else_part
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 64
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 43
+
+   33 while_loop: WHILE_TOKEN LPAREN_TOKEN . logic_expression RPAREN_TOKEN block
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    logic_expression       ir al estado 65
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 66
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 44
+
+   32 for_loop: FOR_TOKEN LPAREN_TOKEN . IDENTIFIER_TOKEN RPAREN_TOKEN block
+
+    IDENTIFIER_TOKEN  desplazar e ir al estado 67
+
+
+estado 45
+
+   62 factor: BOOL_LITERAL_TOKEN .
+
+    $default  reduce usando la regla 62 (factor)
+
+
+estado 46
+
+   60 factor: NUMBER_TOKEN .
+
+    $default  reduce usando la regla 60 (factor)
+
+
+estado 47
+
+   61 factor: FLOAT_LITERAL_TOKEN .
+
+    $default  reduce usando la regla 61 (factor)
+
+
+estado 48
+
+   59 factor: IDENTIFIER_TOKEN .
+
+    $default  reduce usando la regla 59 (factor)
+
+
+estado 49
+
+   43 expr_negacion: NOT_TOKEN . expr_negacion
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expr_negacion          ir al estado 68
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 66
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 50
+
+   63 factor: LPAREN_TOKEN . expression RPAREN_TOKEN
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 69
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 51
+
+   27 return_statement: RETURN_TOKEN SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 27 (return_statement)
+
+
+estado 52
+
+   26 return_statement: RETURN_TOKEN expression . SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  desplazar e ir al estado 70
+
+
+estado 53
+
+   37 expression: logic_expression .
+
+    $default  reduce usando la regla 37 (expression)
+
+
+estado 54
+
+   39 logic_expression: expr_and .
+   40                 | expr_and . OR_TOKEN logic_expression
+
+    OR_TOKEN  desplazar e ir al estado 71
+
+    $default  reduce usando la regla 39 (logic_expression)
+
+
+estado 55
+
+   41 expr_and: expr_negacion .
+   42         | expr_negacion . AND_TOKEN expr_and
+
+    AND_TOKEN  desplazar e ir al estado 72
+
+    $default  reduce usando la regla 41 (expr_and)
+
+
+estado 56
+
+   44 expr_negacion: expr_comparacion .
+
+    $default  reduce usando la regla 44 (expr_negacion)
+
+
+estado 57
+
+   38 expression: arithmetic_expression .
+   45 expr_comparacion: arithmetic_expression .
+   46                 | arithmetic_expression . op_comparacion arithmetic_expression
+
+    EQ_TOKEN   desplazar e ir al estado 73
+    NEQ_TOKEN  desplazar e ir al estado 74
+    LE_TOKEN   desplazar e ir al estado 75
+    GE_TOKEN   desplazar e ir al estado 76
+    LT_TOKEN   desplazar e ir al estado 77
+    GT_TOKEN   desplazar e ir al estado 78
+
+    AND_TOKEN        reduce usando la regla 45 (expr_comparacion)
+    OR_TOKEN         reduce usando la regla 45 (expr_comparacion)
+    RPAREN_TOKEN     reduce usando la regla 38 (expression)
+    RPAREN_TOKEN     [reduce usando la regla 45 (expr_comparacion)]
+    SEMICOLON_TOKEN  reduce usando la regla 38 (expression)
+    SEMICOLON_TOKEN  [reduce usando la regla 45 (expr_comparacion)]
+    $default         reduce usando la regla 38 (expression)
+
+    op_comparacion  ir al estado 79
+
+
+estado 58
+
+   53 arithmetic_expression: term .
+   54                      | term . PLUS_TOKEN arithmetic_expression
+   55                      | term . MINUS_TOKEN arithmetic_expression
+
+    PLUS_TOKEN   desplazar e ir al estado 80
+    MINUS_TOKEN  desplazar e ir al estado 81
+
+    $default  reduce usando la regla 53 (arithmetic_expression)
+
+
+estado 59
+
+   56 term: factor .
+   57     | factor . MUL_TOKEN term
+   58     | factor . DIV_TOKEN term
+
+    MUL_TOKEN  desplazar e ir al estado 82
+    DIV_TOKEN  desplazar e ir al estado 83
+
+    $default  reduce usando la regla 56 (term)
+
+
+estado 60
+
+   24 print_statement: PRINT_TOKEN LPAREN_TOKEN . expression RPAREN_TOKEN SEMICOLON_TOKEN
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 84
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 61
+
+   25 read_statement: READ_TOKEN LPAREN_TOKEN . IDENTIFIER_TOKEN RPAREN_TOKEN SEMICOLON_TOKEN
+
+    IDENTIFIER_TOKEN  desplazar e ir al estado 85
+
+
+estado 62
+
+   23 assignment: IDENTIFIER_TOKEN EQUALS_TOKEN . expression SEMICOLON_TOKEN
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 86
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 63
+
+   21 declaration: type COLON_TOKEN . IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+   22            | type COLON_TOKEN . IDENTIFIER_TOKEN SEMICOLON_TOKEN
+
+    IDENTIFIER_TOKEN  desplazar e ir al estado 87
+
+
+estado 64
+
+   28 if_statement: IF_TOKEN LPAREN_TOKEN expression . RPAREN_TOKEN block
+   29             | IF_TOKEN LPAREN_TOKEN expression . RPAREN_TOKEN block else_part
+
+    RPAREN_TOKEN  desplazar e ir al estado 88
+
+
+estado 65
+
+   33 while_loop: WHILE_TOKEN LPAREN_TOKEN logic_expression . RPAREN_TOKEN block
+
+    RPAREN_TOKEN  desplazar e ir al estado 89
+
+
+estado 66
+
+   45 expr_comparacion: arithmetic_expression .
+   46                 | arithmetic_expression . op_comparacion arithmetic_expression
+
+    EQ_TOKEN   desplazar e ir al estado 73
+    NEQ_TOKEN  desplazar e ir al estado 74
+    LE_TOKEN   desplazar e ir al estado 75
+    GE_TOKEN   desplazar e ir al estado 76
+    LT_TOKEN   desplazar e ir al estado 77
+    GT_TOKEN   desplazar e ir al estado 78
+
+    $default  reduce usando la regla 45 (expr_comparacion)
+
+    op_comparacion  ir al estado 79
+
+
+estado 67
+
+   32 for_loop: FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN . RPAREN_TOKEN block
+
+    RPAREN_TOKEN  desplazar e ir al estado 90
+
+
+estado 68
+
+   43 expr_negacion: NOT_TOKEN expr_negacion .
+
+    $default  reduce usando la regla 43 (expr_negacion)
+
+
+estado 69
+
+   63 factor: LPAREN_TOKEN expression . RPAREN_TOKEN
+
+    RPAREN_TOKEN  desplazar e ir al estado 91
+
+
+estado 70
+
+   26 return_statement: RETURN_TOKEN expression SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 26 (return_statement)
+
+
+estado 71
+
+   40 logic_expression: expr_and OR_TOKEN . logic_expression
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    logic_expression       ir al estado 92
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 66
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 72
+
+   42 expr_and: expr_negacion AND_TOKEN . expr_and
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expr_and               ir al estado 93
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 66
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 73
+
+   49 op_comparacion: EQ_TOKEN .
+
+    $default  reduce usando la regla 49 (op_comparacion)
+
+
+estado 74
+
+   50 op_comparacion: NEQ_TOKEN .
+
+    $default  reduce usando la regla 50 (op_comparacion)
+
+
+estado 75
+
+   51 op_comparacion: LE_TOKEN .
+
+    $default  reduce usando la regla 51 (op_comparacion)
+
+
+estado 76
+
+   52 op_comparacion: GE_TOKEN .
+
+    $default  reduce usando la regla 52 (op_comparacion)
+
+
+estado 77
+
+   47 op_comparacion: LT_TOKEN .
+
+    $default  reduce usando la regla 47 (op_comparacion)
+
+
+estado 78
+
+   48 op_comparacion: GT_TOKEN .
+
+    $default  reduce usando la regla 48 (op_comparacion)
+
+
+estado 79
+
+   46 expr_comparacion: arithmetic_expression op_comparacion . arithmetic_expression
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    arithmetic_expression  ir al estado 94
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 80
+
+   54 arithmetic_expression: term PLUS_TOKEN . arithmetic_expression
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    arithmetic_expression  ir al estado 95
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 81
+
+   55 arithmetic_expression: term MINUS_TOKEN . arithmetic_expression
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    arithmetic_expression  ir al estado 96
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 82
+
+   57 term: factor MUL_TOKEN . term
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    term    ir al estado 97
+    factor  ir al estado 59
+
+
+estado 83
+
+   58 term: factor DIV_TOKEN . term
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    term    ir al estado 98
+    factor  ir al estado 59
+
+
+estado 84
+
+   24 print_statement: PRINT_TOKEN LPAREN_TOKEN expression . RPAREN_TOKEN SEMICOLON_TOKEN
+
+    RPAREN_TOKEN  desplazar e ir al estado 99
+
+
+estado 85
+
+   25 read_statement: READ_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN . RPAREN_TOKEN SEMICOLON_TOKEN
+
+    RPAREN_TOKEN  desplazar e ir al estado 100
+
+
+estado 86
+
+   23 assignment: IDENTIFIER_TOKEN EQUALS_TOKEN expression . SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  desplazar e ir al estado 101
+
+
+estado 87
+
+   21 declaration: type COLON_TOKEN IDENTIFIER_TOKEN . EQUALS_TOKEN expression SEMICOLON_TOKEN
+   22            | type COLON_TOKEN IDENTIFIER_TOKEN . SEMICOLON_TOKEN
+
+    EQUALS_TOKEN     desplazar e ir al estado 102
+    SEMICOLON_TOKEN  desplazar e ir al estado 103
+
+
+estado 88
+
+   28 if_statement: IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN . block
+   29             | IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN . block else_part
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 104
+
+
+estado 89
+
+   33 while_loop: WHILE_TOKEN LPAREN_TOKEN logic_expression RPAREN_TOKEN . block
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 105
+
+
+estado 90
+
+   32 for_loop: FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN . block
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 106
+
+
+estado 91
+
+   63 factor: LPAREN_TOKEN expression RPAREN_TOKEN .
+
+    $default  reduce usando la regla 63 (factor)
+
+
+estado 92
+
+   40 logic_expression: expr_and OR_TOKEN logic_expression .
+
+    $default  reduce usando la regla 40 (logic_expression)
+
+
+estado 93
+
+   42 expr_and: expr_negacion AND_TOKEN expr_and .
+
+    $default  reduce usando la regla 42 (expr_and)
+
+
+estado 94
+
+   46 expr_comparacion: arithmetic_expression op_comparacion arithmetic_expression .
+
+    $default  reduce usando la regla 46 (expr_comparacion)
+
+
+estado 95
+
+   54 arithmetic_expression: term PLUS_TOKEN arithmetic_expression .
+
+    $default  reduce usando la regla 54 (arithmetic_expression)
+
+
+estado 96
+
+   55 arithmetic_expression: term MINUS_TOKEN arithmetic_expression .
+
+    $default  reduce usando la regla 55 (arithmetic_expression)
+
+
+estado 97
+
+   57 term: factor MUL_TOKEN term .
+
+    $default  reduce usando la regla 57 (term)
+
+
+estado 98
+
+   58 term: factor DIV_TOKEN term .
+
+    $default  reduce usando la regla 58 (term)
+
+
+estado 99
+
+   24 print_statement: PRINT_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN . SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  desplazar e ir al estado 107
+
+
+estado 100
+
+   25 read_statement: READ_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN . SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  desplazar e ir al estado 108
+
+
+estado 101
+
+   23 assignment: IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 23 (assignment)
+
+
+estado 102
+
+   21 declaration: type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN . expression SEMICOLON_TOKEN
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 109
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 103
+
+   22 declaration: type COLON_TOKEN IDENTIFIER_TOKEN SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 22 (declaration)
+
+
+estado 104
+
+   28 if_statement: IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block .
+   29             | IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block . else_part
+
+    ELSE_TOKEN    desplazar e ir al estado 110
+    ELSEIF_TOKEN  desplazar e ir al estado 111
+
+    $default  reduce usando la regla 28 (if_statement)
+
+    else_part  ir al estado 112
+
+
+estado 105
+
+   33 while_loop: WHILE_TOKEN LPAREN_TOKEN logic_expression RPAREN_TOKEN block .
+
+    $default  reduce usando la regla 33 (while_loop)
+
+
+estado 106
+
+   32 for_loop: FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN block .
+
+    $default  reduce usando la regla 32 (for_loop)
+
+
+estado 107
+
+   24 print_statement: PRINT_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 24 (print_statement)
+
+
+estado 108
+
+   25 read_statement: READ_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 25 (read_statement)
+
+
+estado 109
+
+   21 declaration: type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression . SEMICOLON_TOKEN
+
+    SEMICOLON_TOKEN  desplazar e ir al estado 113
+
+
+estado 110
+
+   30 else_part: ELSE_TOKEN . block
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 114
+
+
+estado 111
+
+   31 else_part: ELSEIF_TOKEN . LPAREN_TOKEN expression RPAREN_TOKEN block else_part
+
+    LPAREN_TOKEN  desplazar e ir al estado 115
+
+
+estado 112
+
+   29 if_statement: IF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block else_part .
+
+    $default  reduce usando la regla 29 (if_statement)
+
+
+estado 113
+
+   21 declaration: type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN .
+
+    $default  reduce usando la regla 21 (declaration)
+
+
+estado 114
+
+   30 else_part: ELSE_TOKEN block .
+
+    $default  reduce usando la regla 30 (else_part)
+
+
+estado 115
+
+   31 else_part: ELSEIF_TOKEN LPAREN_TOKEN . expression RPAREN_TOKEN block else_part
+
+    BOOL_LITERAL_TOKEN   desplazar e ir al estado 45
+    NUMBER_TOKEN         desplazar e ir al estado 46
+    FLOAT_LITERAL_TOKEN  desplazar e ir al estado 47
+    IDENTIFIER_TOKEN     desplazar e ir al estado 48
+    NOT_TOKEN            desplazar e ir al estado 49
+    LPAREN_TOKEN         desplazar e ir al estado 50
+
+    expression             ir al estado 116
+    logic_expression       ir al estado 53
+    expr_and               ir al estado 54
+    expr_negacion          ir al estado 55
+    expr_comparacion       ir al estado 56
+    arithmetic_expression  ir al estado 57
+    term                   ir al estado 58
+    factor                 ir al estado 59
+
+
+estado 116
+
+   31 else_part: ELSEIF_TOKEN LPAREN_TOKEN expression . RPAREN_TOKEN block else_part
+
+    RPAREN_TOKEN  desplazar e ir al estado 117
+
+
+estado 117
+
+   31 else_part: ELSEIF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN . block else_part
+
+    LBRACE_TOKEN  desplazar e ir al estado 14
+
+    block  ir al estado 118
+
+
+estado 118
+
+   31 else_part: ELSEIF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block . else_part
+
+    ELSE_TOKEN    desplazar e ir al estado 110
+    ELSEIF_TOKEN  desplazar e ir al estado 111
+
+    else_part  ir al estado 119
+
+
+estado 119
+
+   31 else_part: ELSEIF_TOKEN LPAREN_TOKEN expression RPAREN_TOKEN block else_part .
+
+    $default  reduce usando la regla 31 (else_part)
