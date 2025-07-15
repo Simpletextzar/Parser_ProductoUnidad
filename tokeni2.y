@@ -96,9 +96,10 @@ fun_declarations:
     ;
 
 fun_declaration:
-    FUNC_TOKEN IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN COLON_TOKEN return_type block
+      FUNC_TOKEN IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
+    | FUNC_TOKEN IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN COLON_TOKEN return_type block
     | IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
-    ;
+;
 
 parameters_optional:
       /* vacío */
