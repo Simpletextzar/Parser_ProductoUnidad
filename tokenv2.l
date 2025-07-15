@@ -29,20 +29,23 @@ int variable_count = 0;
 
 void add_token(const char* type, const char* value, int line) {
     if (token_count < MAX_TOKENS) {
-        strncpy(tokens[token_count].type, type, sizeof(tokens[token_count].type)-1);
-        strncpy(tokens[token_count].value, value, sizeof(tokens[token_count].value)-1);
+        strncpy(tokens[token_count].type, type, sizeof(tokens[token_count].type) - 1);
+        tokens[token_count].type[sizeof(tokens[token_count].type) - 1] = '\0';
+        strncpy(tokens[token_count].value, value, sizeof(tokens[token_count].value) - 1);
+        tokens[token_count].value[sizeof(tokens[token_count].value) - 1] = '\0';
         tokens[token_count].line = line;
         token_count++;
     }
 }
+
 void add_variable(const char* name, const char* value, const char* type, int line) {
     if (variable_count < MAX_TOKENS) {
-        strncpy(variables[variable_count].name, name, sizeof(variables[variable_count].name)-1);
-        variables[variable_count].name[sizeof(variables[variable_count].name)-1] = '\0';
-        strncpy(variables[variable_count].value, value, sizeof(variables[variable_count].value)-1);
-        variables[variable_count].value[sizeof(variables[variable_count].value)-1] = '\0';
-        strncpy(variables[variable_count].type, type, sizeof(variables[variable_count].type)-1);
-        variables[variable_count].type[sizeof(variables[variable_count].type)-1] = '\0';
+        strncpy(variables[variable_count].name, name, sizeof(variables[variable_count].name) - 1);
+        variables[variable_count].name[sizeof(variables[variable_count].name) - 1] = '\0';
+        strncpy(variables[variable_count].value, value, sizeof(variables[variable_count].value) - 1);
+        variables[variable_count].value[sizeof(variables[variable_count].value) - 1] = '\0';
+        strncpy(variables[variable_count].type, type, sizeof(variables[variable_count].type) - 1);
+        variables[variable_count].type[sizeof(variables[variable_count].type) - 1] = '\0';
         variables[variable_count].line = line;
         variable_count++;
     }
@@ -60,18 +63,16 @@ void write_tokens_and_variables() {
             tokens[i].type, tokens[i].value, tokens[i].line);
     }
 
-    // Write all variables with name, value, type, and line
     fprintf(varfile, "%-15s %-15s %-10s %-10s\n", "Name", "Value", "Type", "Line");
     fprintf(varfile, "-----------------------------------------------\n");
     for (int i = 0; i < variable_count; ++i) {
         fprintf(varfile, "%-15s %-15s %-10s %-10d\n",
-           variables[i].name, variables[i].value, variables[i].type, variables[i].line);
+            variables[i].name, variables[i].value, variables[i].type, variables[i].line);
     }
 
     fclose(tokfile);
     fclose(varfile);
 }
-
 
 %}
 

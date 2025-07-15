@@ -2,8 +2,10 @@ bison -d tokenizer.y
 flex tokenv2.l
 gcc tokenizer.tab.c lex.yy.c -o a
 
-
-"C:\Herramientas\bison\bin\bison.exe" -d tokeni2.y
 bison -d tokeni2.y
+"C:\Herramientas\bison\bin\bison.exe" -d tokeni2.y
 flex tokenv2.l
-gcc tokeni2.tab.c lex.yy.c -o a
+gcc tokeni2.tab.c lex.yy.c -o a.exe
+a.exe
+
+

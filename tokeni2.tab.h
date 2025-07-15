@@ -95,7 +95,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 10 "tokeni2.y"
+#line 12 "tokeni2.y"
 
     char str[128];
     int number;

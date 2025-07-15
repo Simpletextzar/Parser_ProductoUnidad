@@ -5,6 +5,8 @@ void yyerror(const char *s);
 int yylex(void);
 extern FILE *yyin;
 extern int line_number;
+extern void write_tokens_and_variables();
+extern void add_variable(char*, char*, char*, int);
 %}
 
 %union {
@@ -36,8 +38,7 @@ extern int line_number;
 %token PROGRAM_TOKEN
 %token TO_TOKEN
 %token MOD_TOKEN
-%token STRING_LITERAL_TOKEN
-
+%token <str>STRING_LITERAL_TOKEN
 
 %token EQ_TOKEN
 %token NEQ_TOKEN
@@ -61,6 +62,9 @@ extern int line_number;
 %token SEMICOLON_TOKEN
 %token COMMA_TOKEN
 
+%type <str> type
+%type <str> expression
+
 %left OR_TOKEN
 %left AND_TOKEN
 %right NOT_TOKEN
@@ -82,7 +86,8 @@ extern int line_number;
 %%
 
 prog:
-      fun_declarations fun_main
+      PROGRAM_TOKEN fun_declarations fun_main
+    | fun_declarations fun_main
     ;
 
 fun_declarations:
@@ -91,12 +96,18 @@ fun_declarations:
     ;
 
 fun_declaration:
-    IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
+    FUNC_TOKEN IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN COLON_TOKEN return_type block
+    | IDENTIFIER_TOKEN LPAREN_TOKEN parameters_optional RPAREN_TOKEN block
     ;
 
 parameters_optional:
       /* vacío */
     | parameters_list
+    ;
+
+return_type:
+    VOID_TOKEN
+    | type
     ;
 
 parameters_list:
@@ -129,9 +140,23 @@ statement:
     ;
 
 declaration:
-    type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+      VAR_TOKEN IDENTIFIER_TOKEN COLON_TOKEN type EQUALS_TOKEN expression SEMICOLON_TOKEN
+        {
+            add_variable($2, $6, $4, line_number);
+        }
+    | VAR_TOKEN IDENTIFIER_TOKEN COLON_TOKEN type SEMICOLON_TOKEN
+        {
+            add_variable($2, "", $4, line_number);
+        }
+    | type COLON_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
+        {
+            add_variable($3, $5, $1, line_number);
+        }
     | type COLON_TOKEN IDENTIFIER_TOKEN SEMICOLON_TOKEN
-    ;
+        {
+            add_variable($3, "", $1, line_number);
+        }
+;
 
 assignment:
     IDENTIFIER_TOKEN EQUALS_TOKEN expression SEMICOLON_TOKEN
@@ -161,7 +186,8 @@ else_part:
     ;
 
 for_loop:
-    FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN block
+    FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN EQUALS_TOKEN expression TO_TOKEN expression RPAREN_TOKEN block
+    | FOR_TOKEN LPAREN_TOKEN IDENTIFIER_TOKEN RPAREN_TOKEN block
     ;
 
 while_loop:
@@ -169,29 +195,35 @@ while_loop:
     ;
 
 type:
-    INT_TOKEN | FLOAT_TOKEN | BOOL_TOKEN | STRING_TOKEN
-    ;
+    INT_TOKEN     { strcpy($$, "int"); }
+  | FLOAT_TOKEN   { strcpy($$, "float"); }
+  | BOOL_TOKEN    { strcpy($$, "bool"); }
+  | STRING_TOKEN  { strcpy($$, "string"); }
+;
 
 expression:
-      expression OR_TOKEN expression
-    | expression AND_TOKEN expression
-    | NOT_TOKEN expression
-    | expression EQ_TOKEN expression
-    | expression NEQ_TOKEN expression
-    | expression LT_TOKEN expression
-    | expression GT_TOKEN expression
-    | expression LE_TOKEN expression
-    | expression GE_TOKEN expression
-    | expression PLUS_TOKEN expression
-    | expression MINUS_TOKEN expression
-    | expression MUL_TOKEN expression
-    | expression DIV_TOKEN expression
-    | LPAREN_TOKEN expression RPAREN_TOKEN
-    | IDENTIFIER_TOKEN
-    | NUMBER_TOKEN
-    | FLOAT_LITERAL_TOKEN
-    | BOOL_LITERAL_TOKEN
-    ;
+      expression OR_TOKEN expression      { sprintf($$, "%s || %s", $1, $3); }
+    | expression AND_TOKEN expression     { sprintf($$, "%s && %s", $1, $3); }
+    | NOT_TOKEN expression                { sprintf($$, "!%s", $2); }
+    | expression EQ_TOKEN expression      { sprintf($$, "%s == %s", $1, $3); }
+    | expression NEQ_TOKEN expression     { sprintf($$, "%s != %s", $1, $3); }
+    | expression LT_TOKEN expression      { sprintf($$, "%s < %s", $1, $3); }
+    | expression GT_TOKEN expression      { sprintf($$, "%s > %s", $1, $3); }
+    | expression LE_TOKEN expression      { sprintf($$, "%s <= %s", $1, $3); }
+    | expression GE_TOKEN expression      { sprintf($$, "%s >= %s", $1, $3); }
+    | expression PLUS_TOKEN expression    { sprintf($$, "%s + %s", $1, $3); }
+    | expression MINUS_TOKEN expression   { sprintf($$, "%s - %s", $1, $3); }
+    | expression MUL_TOKEN expression     { sprintf($$, "%s * %s", $1, $3); }
+    | expression DIV_TOKEN expression     { sprintf($$, "%s / %s", $1, $3); }
+    | expression MOD_TOKEN expression     { sprintf($$, "%s %% %s", $1, $3); }
+    | LPAREN_TOKEN expression RPAREN_TOKEN{ sprintf($$, "(%s)", $2); }
+    | IDENTIFIER_TOKEN                    { strcpy($$, $1); }
+    | NUMBER_TOKEN                        { sprintf($$, "%d", $1); }
+    | FLOAT_LITERAL_TOKEN                 { sprintf($$, "%f", $1); }
+    | BOOL_LITERAL_TOKEN                  { strcpy($$, $1); }
+    | STRING_LITERAL_TOKEN                { strcpy($$, $1); }
+;
+
 
 %%
 
@@ -204,9 +236,13 @@ int main() {
     if (file) {
         yyin = file;
     }
+
     yyparse();
+
     if (file) {
         fclose(file);
     }
+
+    write_tokens_and_variables(); 
     return 0;
 }
