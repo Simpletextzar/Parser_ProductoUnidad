@@ -31,6 +31,12 @@ extern int line_number;
 %token <number> NUMBER_TOKEN
 %token <fval> FLOAT_LITERAL_TOKEN
 %token <str> IDENTIFIER_TOKEN
+%token VAR_TOKEN
+%token FUNC_TOKEN
+%token PROGRAM_TOKEN
+%token TO_TOKEN
+%token MOD_TOKEN
+%token STRING_LITERAL_TOKEN
 
 
 %token EQ_TOKEN
