@@ -202,26 +202,16 @@ FACTOR: IDENTIFIER_TOKEN
 %%
 
 
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Uso: %s <archivo_fuente>\n", argv[0]);
-        return 1;
+int main() {
+    FILE *file = fopen("read_file.txt", "r");
+    if (file) {
+        yyin = file;
     }
-
-    yyin = fopen(argv[1], "r");
-    if (!yyin) {
-        perror("No se pudo abrir el archivo de entrada");
-        return 1;
+    yyparse();
+    if (file) {
+        fclose(file);
     }
-
-    printf("Iniciando análisis sintáctico...\n");
-    if (yyparse() == 0) {
-        printf("Análisis sintáctico completado con éxito.\n");
-    } else {
-        printf("Análisis sintáctico fallido.\n");
-    }
-
-    fclose(yyin);
+    write_tokens_and_variables();
     return 0;
 }
 

@@ -54,39 +54,51 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    IF_TOKEN = 258,                /* IF_TOKEN  */
-    ELSE_TOKEN = 259,              /* ELSE_TOKEN  */
-    WHILE_TOKEN = 260,             /* WHILE_TOKEN  */
-    FOR_TOKEN = 261,               /* FOR_TOKEN  */
-    RETURN_TOKEN = 262,            /* RETURN_TOKEN  */
-    INT_TOKEN = 263,               /* INT_TOKEN  */
-    FLOAT_TOKEN = 264,             /* FLOAT_TOKEN  */
-    BOOL_TOKEN = 265,              /* BOOL_TOKEN  */
-    BOOL_LITERAL_TOKEN = 266,      /* BOOL_LITERAL_TOKEN  */
-    VOID_TOKEN = 267,              /* VOID_TOKEN  */
-    VAR_TOKEN = 268,               /* VAR_TOKEN  */
-    EQ_TOKEN = 269,                /* EQ_TOKEN  */
-    NEQ_TOKEN = 270,               /* NEQ_TOKEN  */
-    LE_TOKEN = 271,                /* LE_TOKEN  */
-    GE_TOKEN = 272,                /* GE_TOKEN  */
-    LT_TOKEN = 273,                /* LT_TOKEN  */
-    GT_TOKEN = 274,                /* GT_TOKEN  */
-    EQUALS_TOKEN = 275,            /* EQUALS_TOKEN  */
-    PLUS_TOKEN = 276,              /* PLUS_TOKEN  */
-    MINUS_TOKEN = 277,             /* MINUS_TOKEN  */
-    MUL_TOKEN = 278,               /* MUL_TOKEN  */
-    DIV_TOKEN = 279,               /* DIV_TOKEN  */
-    LPAREN_TOKEN = 280,            /* LPAREN_TOKEN  */
-    RPAREN_TOKEN = 281,            /* RPAREN_TOKEN  */
-    LBRACE_TOKEN = 282,            /* LBRACE_TOKEN  */
-    RBRACE_TOKEN = 283,            /* RBRACE_TOKEN  */
-    COLON_TOKEN = 284,             /* COLON_TOKEN  */
-    SEMICOLON_TOKEN = 285,         /* SEMICOLON_TOKEN  */
-    COMMA_TOKEN = 286,             /* COMMA_TOKEN  */
-    NUMBER_TOKEN = 287,            /* NUMBER_TOKEN  */
-    FLOAT_LITERAL_TOKEN = 288,     /* FLOAT_LITERAL_TOKEN  */
-    IDENTIFIER_TOKEN = 289,        /* IDENTIFIER_TOKEN  */
-    UNKNOWN_TOKEN = 290            /* UNKNOWN_TOKEN  */
+    IDENTIFIER_TOKEN = 258,        /* IDENTIFIER_TOKEN  */
+    NUMBER_TOKEN = 259,            /* NUMBER_TOKEN  */
+    FLOAT_LITERAL_TOKEN = 260,     /* FLOAT_LITERAL_TOKEN  */
+    STRING_LITERAL_TOKEN = 261,    /* STRING_LITERAL_TOKEN  */
+    BOOL_LITERAL_TOKEN = 262,      /* BOOL_LITERAL_TOKEN  */
+    IF_TOKEN = 263,                /* IF_TOKEN  */
+    ELSE_TOKEN = 264,              /* ELSE_TOKEN  */
+    WHILE_TOKEN = 265,             /* WHILE_TOKEN  */
+    FOR_TOKEN = 266,               /* FOR_TOKEN  */
+    RETURN_TOKEN = 267,            /* RETURN_TOKEN  */
+    INT_TOKEN = 268,               /* INT_TOKEN  */
+    FLOAT_TOKEN = 269,             /* FLOAT_TOKEN  */
+    BOOL_TOKEN = 270,              /* BOOL_TOKEN  */
+    STRING_TOKEN = 271,            /* STRING_TOKEN  */
+    VOID_TOKEN = 272,              /* VOID_TOKEN  */
+    VAR_TOKEN = 273,               /* VAR_TOKEN  */
+    FUNC_TOKEN = 274,              /* FUNC_TOKEN  */
+    MAIN_TOKEN = 275,              /* MAIN_TOKEN  */
+    PROGRAM_TOKEN = 276,           /* PROGRAM_TOKEN  */
+    PRINT_TOKEN = 277,             /* PRINT_TOKEN  */
+    TO_TOKEN = 278,                /* TO_TOKEN  */
+    READ_TOKEN = 279,              /* READ_TOKEN  */
+    ELSEIF_TOKEN = 280,            /* ELSEIF_TOKEN  */
+    EQ_TOKEN = 281,                /* EQ_TOKEN  */
+    NEQ_TOKEN = 282,               /* NEQ_TOKEN  */
+    LE_TOKEN = 283,                /* LE_TOKEN  */
+    GE_TOKEN = 284,                /* GE_TOKEN  */
+    LT_TOKEN = 285,                /* LT_TOKEN  */
+    GT_TOKEN = 286,                /* GT_TOKEN  */
+    EQUALS_TOKEN = 287,            /* EQUALS_TOKEN  */
+    PLUS_TOKEN = 288,              /* PLUS_TOKEN  */
+    MINUS_TOKEN = 289,             /* MINUS_TOKEN  */
+    MUL_TOKEN = 290,               /* MUL_TOKEN  */
+    DIV_TOKEN = 291,               /* DIV_TOKEN  */
+    MOD_TOKEN = 292,               /* MOD_TOKEN  */
+    LPAREN_TOKEN = 293,            /* LPAREN_TOKEN  */
+    RPAREN_TOKEN = 294,            /* RPAREN_TOKEN  */
+    LBRACE_TOKEN = 295,            /* LBRACE_TOKEN  */
+    RBRACE_TOKEN = 296,            /* RBRACE_TOKEN  */
+    COLON_TOKEN = 297,             /* COLON_TOKEN  */
+    SEMICOLON_TOKEN = 298,         /* SEMICOLON_TOKEN  */
+    COMMA_TOKEN = 299,             /* COMMA_TOKEN  */
+    AND_TOKEN = 300,               /* AND_TOKEN  */
+    OR_TOKEN = 301,                /* OR_TOKEN  */
+    NOT_TOKEN = 302                /* NOT_TOKEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -95,13 +107,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "tokenizer.y"
+#line 18 "tokenizer.y"
 
-    char str[128];	
     int number;
-    double fval;
+    float fval;
+    char str[128]; // Tamaño fijo, como en tu ejemplo
 
-#line 105 "tokenizer.tab.h"
+#line 117 "tokenizer.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
