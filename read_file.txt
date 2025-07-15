@@ -1,11 +1,11 @@
-var x : int = 8;
-var y : float = 3.14;
-var flag : bool = true;
-var name : int = 42;
-if (x > 5) {
-    y = y + 1.0;
+func sumar(a, b) {
+    return a + b;
 }
-else {
-    y = y - 1.0;
+
+main program() {
+    int: x = 5;
+    int: y = 10;
+    sumar(x, y);
+    print("El resultado es:");
+    print(resultado);
 }
-return x;
