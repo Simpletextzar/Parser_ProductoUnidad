@@ -22,6 +22,7 @@ extern int line_number;
 %token INT_TOKEN
 %token FLOAT_TOKEN
 %token BOOL_TOKEN
+%token STRING_TOKEN
 %token VOID_TOKEN
 %token PRINT_TOKEN
 %token READ_TOKEN
@@ -30,6 +31,7 @@ extern int line_number;
 %token <number> NUMBER_TOKEN
 %token <fval> FLOAT_LITERAL_TOKEN
 %token <str> IDENTIFIER_TOKEN
+
 
 %token EQ_TOKEN
 %token NEQ_TOKEN
@@ -161,7 +163,7 @@ while_loop:
     ;
 
 type:
-    INT_TOKEN | FLOAT_TOKEN | BOOL_TOKEN
+    INT_TOKEN | FLOAT_TOKEN | BOOL_TOKEN | STRING_TOKEN
     ;
 
 expression:

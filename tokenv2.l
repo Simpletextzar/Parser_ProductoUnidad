@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include "tokenizer.tab.h"
+#include "tokeni2.tab.h"
 FILE *out_file;
 int line_number = 1;
 
